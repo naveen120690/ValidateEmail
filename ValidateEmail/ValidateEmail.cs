@@ -99,26 +99,26 @@ namespace ValidateEmail
                     return false;
                 }
 
-                //connector.SendData("AUTH LOGIN" + SmtpConnectorBase.EOF);
-                //if (!connector.CheckResponse(334))
-                //{
-                //    connector.Dispose();
-                //    return false;
-                //}
+                connector.SendData("AUTH LOGIN" + SmtpConnectorBase.EOF);
+                if (!connector.CheckResponse(334))
+                {
+                    connector.Dispose();
+                    return false;
+                }
 
-                //connector.SendData(Convert.ToBase64String(Encoding.UTF8.GetBytes(Username)) + SmtpConnectorBase.EOF);
-                //if (!connector.CheckResponse(334))
-                //{
-                //    connector.Dispose();
-                //    return false;
-                //}
+                connector.SendData(Convert.ToBase64String(Encoding.UTF8.GetBytes(Username)) + SmtpConnectorBase.EOF);
+                if (!connector.CheckResponse(334))
+                {
+                    connector.Dispose();
+                    return false;
+                }
 
-                //connector.SendData(Convert.ToBase64String(Encoding.UTF8.GetBytes(Password)) + SmtpConnectorBase.EOF);
-                //if (!connector.CheckResponse(235))
-                //{
-                //    connector.Dispose();
-                //    return false;
-                //}
+                connector.SendData(Convert.ToBase64String(Encoding.UTF8.GetBytes(Password)) + SmtpConnectorBase.EOF);
+                if (!connector.CheckResponse(235))
+                {
+                    connector.Dispose();
+                    return false;
+                }
 
                 return true;
             }
