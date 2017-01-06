@@ -11,6 +11,19 @@ using ValidateEmail.SmtpConnector;
 namespace ValidateEmail
 {
     /// <summary>
+    /// Email connection security or encryption type
+    /// 0- None- non-encrypted message
+    /// 1- SSL_TLS- Encypted message
+    /// 2- STARTTLS- STARTTLS
+    /// </summary>
+    public enum NGConnectionSecurity
+    {
+        None = 0,
+        SSL_TLS = 1,
+        STARTTLS = 2
+    }
+
+    /// <summary>
     /// This class is used to validate email.
     /// </summary>
     /// <Author>Naveen Kumar</Author>
@@ -18,7 +31,7 @@ namespace ValidateEmail
     {
         public string Host { get; set; }
         public int Port { get; set; }
-        public bool EnableSsl { get; set; }
+        public NGConnectionSecurity ConnectionSecurity { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public string Protocol { get; set; }
@@ -29,7 +42,7 @@ namespace ValidateEmail
         protected const string IMAP_LOGIN_COMMAND = "LOGIN";
         protected const string COMMAND_EOL = "\r\n";
         protected const string IMAP_OK_RESPONSE = IMAP_COMMAND_PREFIX + " " + "OK";
-
+        public bool EnableSsl { get; set; }
         /// <summary>
         /// Constructor to initialize object.
         /// </summary>
@@ -41,122 +54,33 @@ namespace ValidateEmail
         /// <summary>
         /// To check authentication of email server
         /// </summary>
-        /// <returns></returns>
+        /// <returns>bool</returns>
         public bool Authenticate()
         {
             if (Protocol.StartsWith("IMAP", StringComparison.OrdinalIgnoreCase))
             {
-                ImapConnectorBase connector;
-                if (EnableSsl)
-                {
-                    connector = new ImapConnectorWithSsl(Host, Port);
-                }
-                else
-                {
-                    connector = new ImapConnectorWithoutSsl(Host, Port);
-                }
-                if (!connector.CheckResponse(IMAP_OK_SERVER_RESPONSE))
-                {
-                    connector.Dispose();
-                    return false;
-                }
-                connector.SendData(IMAP_COMMAND_PREFIX + " " + IMAP_CAPABILITY_COMMAND + COMMAND_EOL);
-                if (!connector.CheckResponse(IMAP_OK_RESPONSE))
-                {
-                    connector.Dispose();
-                    return false;
-                }
-                connector.SendData(IMAP_COMMAND_PREFIX + " " + IMAP_LOGIN_COMMAND + " " + Username + " " + Password + COMMAND_EOL);
-                if (!connector.CheckResponse(IMAP_OK_RESPONSE))
-                {
-                    connector.Dispose();
-                    return false;
-                }
-                return true;
+
+                ImapConnector.ImapConnector connector = new ImapConnector.ImapConnector();
+                var isLogin = connector.Login(this.Host, this.Port, this.Username, this.Password, this.ConnectionSecurity);
+                connector.Disconnect();
+                connector.Dispose();
+                return isLogin;
             }
             else if (Protocol.StartsWith("SMTP", StringComparison.OrdinalIgnoreCase))
             {
-                SmtpConnectorBase connector;
-                if (EnableSsl)
-                {
-                    connector = new SmtpConnectorWithSsl(Host, Port);
-                }
-                else
-                {
-                    connector = new SmtpConnectorWithoutSsl(Host, Port);
-                }
-
-                if (!connector.CheckResponse(220))
-                {
-                    connector.Dispose();
-                    return false;
-                }
-
-                connector.SendData(string.Format("HELO {0}{1}", Dns.GetHostName(), SmtpConnectorBase.EOF));
-                if (!connector.CheckResponse(250))
-                {
-                    connector.Dispose();
-                    return false;
-                }
-
-                connector.SendData("AUTH LOGIN" + SmtpConnectorBase.EOF);
-                if (!connector.CheckResponse(334))
-                {
-                    connector.Dispose();
-                    return false;
-                }
-
-                connector.SendData(Convert.ToBase64String(Encoding.UTF8.GetBytes(Username)) + SmtpConnectorBase.EOF);
-                if (!connector.CheckResponse(334))
-                {
-                    connector.Dispose();
-                    return false;
-                }
-
-                connector.SendData(Convert.ToBase64String(Encoding.UTF8.GetBytes(Password)) + SmtpConnectorBase.EOF);
-                if (!connector.CheckResponse(235))
-                {
-                    connector.Dispose();
-                    return false;
-                }
-
-                return true;
+                SmtpConnector.SmtpConnector connector = new SmtpConnector.SmtpConnector();
+                var isLogin=connector.Login(this.Host,this.Port,this.Username,this.Password,this.ConnectionSecurity);
+                connector.Disconnect();
+                connector.Dispose();
+                return isLogin;
             }
             else if (Protocol.StartsWith("POP", StringComparison.OrdinalIgnoreCase))
             {
-                PopConnectorBase connector;
-                if (EnableSsl)
-                {
-                    connector = new PopConnectorWithSsl(Host, Port);
-                }
-                else
-                {
-                    connector = new PopConnectorWithoutSsl(Host, Port);
-                }
-                if (!connector.CheckResponse(POP_OK_SERVER_RESPONSE))
-                {
-                    connector.Dispose();
-                    return false;
-                }
-                //connector.SendData(IMAP_COMMAND_PREFIX + " " + IMAP_CAPABILITY_COMMAND + IMAP_COMMAND_EOL);
-                //if (!connector.CheckResponse(IMAP_OK_RESPONSE))
-                //{
-                //     connector.Dispose();
-                //   return false;
-                //}
-                connector.SendData("USER " + Username + COMMAND_EOL);
-                if (!connector.CheckResponse(POP_OK_SERVER_RESPONSE))
-                {
-                    connector.Dispose();
-                    return false;
-                }
-                connector.SendData("PASS " + Password + COMMAND_EOL);
-                if (!connector.CheckResponse(POP_OK_SERVER_RESPONSE))
-                {
-                    connector.Dispose();
-                    return false;
-                }
-                return true;
+                PopConnector.PopConnector connector = new PopConnector.PopConnector();
+                var isLogin = connector.Login(this.Host, this.Port, this.Username, this.Password, this.ConnectionSecurity);
+                connector.Disconnect();
+                connector.Dispose();
+                return isLogin;
             }
             else
             {

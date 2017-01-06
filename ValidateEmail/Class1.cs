@@ -19,43 +19,99 @@ namespace ValidateEmail
             myProxy.Credentials = new System.Net.NetworkCredential("naveen-kumar", "sample");
             WebRequest.DefaultWebProxy = myProxy;
 
+            Logger.Initialize(AppDomain.CurrentDomain.BaseDirectory, true);
+
             ValidateEmail validateEmail = new ValidateEmail();
-            //validateEmail.Host = "mx.newgen.co.in";
-            //validateEmail.Port = 25;
-            //validateEmail.Protocol = "SMTP";
-            //validateEmail.EnableSsl = false;
-            //validateEmail.Username = "naveen-kumar";
-            //validateEmail.Password = "sample";
+            
+            validateEmail.Host = "mx.newgen.co.in";
+            validateEmail.Port = 25;
+            validateEmail.Protocol = "SMTP";
+            validateEmail.ConnectionSecurity = NGConnectionSecurity.None;
+            validateEmail.Username = "username";
+            validateEmail.Password = "password";
 
-            //validateEmail.Host = "smtp.gmail.com";
-            //validateEmail.Port = 465;
-            //validateEmail.Protocol = "SMTP";
-            //validateEmail.EnableSsl = true;
-            //validateEmail.Username = "snoopy.newgen";
-            //validateEmail.Password = "sample";
-
-            //validateEmail.Host = "smtp.gmail.com";
-            //validateEmail.Port = 465;//587 TLS
-            //validateEmail.Protocol = "SMTP";
-            //validateEmail.EnableSsl = true;
-            //validateEmail.Username = "snoopy.newgen";
-            //validateEmail.Password = "sample";
+            validateEmail.Host = "mx.newgen.co.in";
+            validateEmail.Port = 465;
+            validateEmail.Protocol = "SMTP";
+            validateEmail.ConnectionSecurity = NGConnectionSecurity.SSL_TLS;
+            validateEmail.Username = "username";
+            validateEmail.Password = "password";
 
 
-            //validateEmail.Host = "pop-mail.outlook.com";
-            //validateEmail.Port = 995;//587 TLS
-            //validateEmail.Protocol = "POP";
-            //validateEmail.EnableSsl = true;
-            //validateEmail.Username = "naveen.bhatnagar@oulook.com";
-            //validateEmail.Password = "sample";
+            validateEmail.Host = "mx.newgen.co.in";
+            validateEmail.Port = 587;
+            validateEmail.Protocol = "SMTP";
+            validateEmail.ConnectionSecurity = NGConnectionSecurity.None;
+            validateEmail.Username = "username";
+            validateEmail.Password = "password";
 
-            validateEmail.Host = "pop.gmail.com";
+            validateEmail.Host = "smtp.gmail.com";
+            validateEmail.Port = 25;
+            validateEmail.Protocol = "SMTP";
+            validateEmail.ConnectionSecurity = NGConnectionSecurity.STARTTLS;
+            validateEmail.Username = "username";
+            validateEmail.Password = "password";
+
+
+            validateEmail.Host = "smtp.gmail.com";
+            validateEmail.Port = 465;
+            validateEmail.Protocol = "SMTP";
+            validateEmail.ConnectionSecurity = NGConnectionSecurity.SSL_TLS;
+            validateEmail.Username = "username";
+            validateEmail.Password = "password";
+
+            validateEmail.Host = "smtp.gmail.com";
+            validateEmail.Port = 587;
+            validateEmail.Protocol = "SMTP";
+            validateEmail.ConnectionSecurity = NGConnectionSecurity.STARTTLS;
+            validateEmail.Username = "username";
+            validateEmail.Password = "password";
+
+            validateEmail.Host = "smtp-mail.outlook.com";
+            validateEmail.Port = 25;
+            validateEmail.Protocol = "SMTP";
+            validateEmail.ConnectionSecurity = NGConnectionSecurity.STARTTLS;
+            validateEmail.Username = "username";
+            validateEmail.Password = "password";
+
+            validateEmail.Host = "smtp-mail.outlook.com";
+            validateEmail.Port = 587;
+            validateEmail.Protocol = "SMTP";
+            validateEmail.ConnectionSecurity = NGConnectionSecurity.STARTTLS;
+            validateEmail.Username = "username";
+            validateEmail.Password = "password";
+
+            //Imap Settings
+            validateEmail.Host = "mx.newgen.co.in";
             validateEmail.Port = 995;//587 TLS
-            validateEmail.Protocol = "POP";
-            validateEmail.EnableSsl = true;
-            validateEmail.Username = "snoopy.newgen";
-            validateEmail.Password = "sample";
-            validateEmail.Authenticate();
+            validateEmail.Protocol = "IMAP";
+            validateEmail.ConnectionSecurity = NGConnectionSecurity.SSL_TLS;
+            validateEmail.Username = "username";
+            validateEmail.Password = "password";
+
+            validateEmail.Host = "imap.gmail.com";
+            validateEmail.Port = 993;
+            validateEmail.Protocol = "IMAP";
+            validateEmail.ConnectionSecurity = NGConnectionSecurity.SSL_TLS;
+            validateEmail.Username = "username";
+            validateEmail.Password = "password";
+
+            validateEmail.Host = "imap-mail.outlook.com";
+            validateEmail.Port = 993;
+            validateEmail.Protocol = "IMAP";
+            validateEmail.ConnectionSecurity = NGConnectionSecurity.SSL_TLS;
+            validateEmail.Username = "username";
+            validateEmail.Password = "password";
+
+            validateEmail.Host = "imap.gmx.com";
+            validateEmail.Port = 143;
+            validateEmail.Protocol = "IMAP";
+            validateEmail.ConnectionSecurity = NGConnectionSecurity.STARTTLS;
+            validateEmail.Username = "username";
+            validateEmail.Password = "password";
+
+            var authnticate=validateEmail.Authenticate();
+            Console.Write(authnticate);
 
         }
     }

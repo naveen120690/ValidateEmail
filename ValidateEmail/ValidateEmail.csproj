@@ -63,16 +63,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
-    <Compile Include="ImapConnector\ImapConnectorBase.cs" />
-    <Compile Include="ImapConnector\ImapConnectorWithoutSsl.cs" />
-    <Compile Include="ImapConnector\ImapConnectorWithSsl.cs" />
-    <Compile Include="PopConnector\PopConnectorBase.cs" />
-    <Compile Include="PopConnector\PopConnectorWithoutSsl.cs" />
-    <Compile Include="PopConnector\PopConnectorWithSsl.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="ImapConnector\NGImapCommands.cs" />
+    <Compile Include="ImapConnector\NGImapStatusCode.cs" />
+    <Compile Include="PopConnector\PopConnector.cs" />
+    <Compile Include="PopConnector\NGPopCommands.cs" />
+    <Compile Include="PopConnector\NGPopStatusCode.cs" />
+    <Compile Include="ImapConnector\ImapConnector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SmtpConnector\SmtpConnectorBase.cs" />
-    <Compile Include="SmtpConnector\SmtpConnectorWithoutSsl.cs" />
-    <Compile Include="SmtpConnector\SmtpConnectorWithSsl.cs" />
+    <Compile Include="SmtpConnector\NGSmtpCommands.cs" />
+    <Compile Include="SmtpConnector\NGSmtpStatusCode.cs" />
+    <Compile Include="SmtpConnector\SmtpConnector.cs" />
     <Compile Include="ValidateEmail.cs" />
   </ItemGroup>
   <ItemGroup />
